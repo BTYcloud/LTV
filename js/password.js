@@ -224,7 +224,7 @@ function showAdminPasswordModal() {
 
     // 修改标题为管理员验证
     const title = passwordModal.querySelector('h2');
-    if (title) title.textContent = '管理员验证';
+    if (title) title.textContent = '管理員驗證-遊客滾蛋';
 
     document.getElementById('passwordCancelBtn').classList.remove('hidden');
     passwordModal.style.display = 'flex';
