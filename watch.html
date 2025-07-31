@@ -3,24 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在加载播放器...</title>
     <meta http-equiv="refresh" content="3; url=player.html">
-    <title>馬上給您玩命加載...</title>
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="css/watch.css">
-    <script src="js/watch.js"></script>
+    
+    <script src="libs/tailwindcss.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+    </style>
+
+    <style>
+        .redirect-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            background-color: #0c0a09; /* bg-zinc-950 */
+            color: #d4d4d4; /* text-neutral-200 */
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .logo-icon {
+            width: 4rem;
+            height: 4rem;
+            margin-right: 1rem;
+            color: #a3a3a3; /* text-neutral-400 */
+        }
+        .logo-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fafafa; /* text-neutral-100 */
+        }
+        .loading-animation {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 4px solid #44403c; /* border-zinc-700 */
+            border-top-color: #fafafa; /* text-white */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .redirect-message {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #a3a3a3; /* text-neutral-400 */
+        }
+        #redirect-status {
+            font-size: 1rem;
+            color: #737373; /* text-neutral-500 */
+            margin-bottom: 1.5rem;
+        }
+        .redirect-hint {
+            font-size: 0.875rem;
+            color: #737373; /* text-neutral-500 */
+        }
+        .redirect-hint a {
+            color: #3b82f6; /* text-blue-500 */
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .redirect-hint a:hover {
+            color: #60a5fa; /* text-blue-400 */
+        }
+    </style>
 </head>
-<body>
+<body class="bg-zinc-950">
     <div class="redirect-container">
         <div class="logo-container">
             <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
             </svg>
-            <h1 class="logo-text">RUN TV</h1>
+            <h1 class="logo-text">潤飛影視</h1>
         </div>
         <div class="loading-animation"></div>
-        <div class="redirect-message">加載播放器...稍等3秒鐘...</div>
-        <div id="redirect-status">正在跟資源握手，请稍候...</div>
-        <p class="redirect-hint">如果你的拉圾老爺機不會自動跳，趕緊<a href="player.html" id="manual-redirect">點擊這裡</a></p>
+        <div class="redirect-message">正在加载播放器...</div>
+        <div id="redirect-status">准备视频数据中，请稍候...</div>
+        <p class="redirect-hint">如果页面没有自动跳转，请<a href="player.html" id="manual-redirect">点击这里</a></p>
     </div>
 </body>
 </html>
