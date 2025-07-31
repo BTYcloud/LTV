@@ -4,88 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="3; url=player.html">
-    <title>正在加载播放器...</title>
+    <title>潤飛影視 - 馬上給您玩命加載...</title>
+    <meta name="description" content="潤飛影視 - 正在為您加載播放器，極速看片體驗即將開啟！">
+    <meta name="keywords" content="視頻播放器,免費視頻,潤飛影視">
+    <meta name="author" content="RUN Team">
+
+    <!-- Favicon -->
+    <link rel="icon" href="image/logo.png">
+    <link rel="apple-touch-icon" href="image/logo-black.png">
     <link rel="manifest" href="manifest.json">
-    
+
+    <!-- Tailwind CSS -->
     <script src="libs/tailwindcss.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #0c0a09; /* bg-zinc-950 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            color: #d4d4d4; /* text-neutral-200 */
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #09090b; /* bg-zinc-950 */
+            color: #e5e7eb; /* text-neutral-200 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
         }
         .redirect-container {
-            background-color: #18181b; /* bg-zinc-900 */
-            border: 1px solid #3f3f46; /* border-zinc-700 */
-            border-radius: 1.5rem; /* rounded-3xl */
-            padding: 2.5rem;
             text-align: center;
-            max-width: 28rem;
+            padding: 2rem;
+            background-color: #18181b; /* bg-zinc-900 */
+            border-radius: 16px; /* rounded-2xl */
+            border: 1px solid #27272a; /* border-zinc-800 */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* shadow-2xl shadow-black/50 */
+            max-width: 500px;
             width: 90%;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .logo-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         .logo-icon {
-            width: 3rem;
-            height: 3rem;
-            margin-right: 0.75rem;
-            color: #a3a3a3; /* text-neutral-400 */
+            width: 2.5rem; /* w-10 */
+            height: 2.5rem; /* h-10 */
+            color: #a1a1aa; /* text-neutral-400 */
+            margin-right: 0.75rem; /* mr-3 */
+            transition: color 0.3s ease-in-out; /* transition-colors */
+        }
+        .logo-container:hover .logo-icon {
+            color: #f5f5f5; /* hover:text-neutral-100 */
         }
         .logo-text {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #fafafa; /* text-neutral-100 */
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            color: #f5f5f5; /* text-neutral-100 */
         }
         .loading-animation {
-            width: 2rem;
-            height: 2rem;
-            border: 4px solid #3f3f46;
-            border-top-color: #e5e5e5; /* text-neutral-200 */
+            width: 32px;
+            height: 32px;
+            border: 4px solid #71717a; /* border-neutral-500 */
+            border-top-color: #ffffff; /* border-t-white */
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem auto;
+            animation: spin 1s ease-in-out infinite;
+            margin: 1rem auto;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         .redirect-message {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: #a3a3a3; /* text-neutral-400 */
-            margin-bottom: 0.5rem;
+            font-size: 1.125rem; /* text-lg */
+            color: #e5e7eb; /* text-neutral-200 */
+            margin-bottom: 1rem;
         }
         #redirect-status {
-            font-size: 0.875rem;
-            color: #737373; /* text-neutral-500 */
-            margin-bottom: 1.5rem;
+            font-size: 0.875rem; /* text-sm */
+            color: #a1a1aa; /* text-neutral-400 */
+            margin-bottom: 1rem;
         }
         .redirect-hint {
-            font-size: 0.875rem;
-            color: #737373; /* text-neutral-500 */
+            font-size: 0.75rem; /* text-xs */
+            color: #71717a; /* text-neutral-500 */
         }
         .redirect-hint a {
             color: #3b82f6; /* text-blue-500 */
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-weight: 500; /* font-medium */
+            transition: color 0.3s ease-in-out;
         }
         .redirect-hint a:hover {
-            color: #60a5fa; /* text-blue-400 */
+            color: #60a5fa; /* hover:text-blue-400 */
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -98,9 +113,16 @@
             <h1 class="logo-text">潤飛影視</h1>
         </div>
         <div class="loading-animation"></div>
-        <div class="redirect-message">正在加载播放器...</div>
-        <div id="redirect-status">准备视频数据中，请稍候...</div>
-        <p class="redirect-hint">如果页面没有自动跳转，请<a href="player.html" id="manual-redirect">点击这里</a></p>
+        <div class="redirect-message">加載播放器...稍等3秒鐘...</div>
+        <div id="redirect-status">正在跟資源握手，請稍候...</div>
+        <p class="redirect-hint">如果你的垃圾老爺機不會自動跳，趕緊<a href="player.html" id="manual-redirect">點擊這裡</a></p>
     </div>
+
+    <script src="libs/sha256.min.js"></script>
+    <script>
+        window._jsSha256 = window.sha256;
+    </script>
+    <script src="js/config.js"></script>
+    <script src="js/watch.js"></script>
 </body>
 </html>
