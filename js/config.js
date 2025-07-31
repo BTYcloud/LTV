@@ -7,15 +7,15 @@ const MAX_HISTORY_ITEMS = 5;
 // 密码保护配置
 const PASSWORD_CONFIG = {
     localStorageKey: 'passwordVerified',  // 存储验证状态的键名
-    verificationTTL: 90 * 24 * 60 * 60 * 1000,  // 验证有效期（90天，约3个月）
+    verificationTTL: 7 * 24 * 60 * 60 * 1000,  // 验证有效期（7天）
     adminLocalStorageKey: 'adminPasswordVerified'  // 新增的管理员验证状态的键名
 };
 
 // 网站信息配置
 const SITE_CONFIG = {
-    name: 'LibreTV',
-    url: 'https://libretv.is-an.org',
-    description: '免费在线视频搜索与观看平台',
+    name: 'RunTV',
+    url: 'https://ltv.af88.xyz',
+    description: 'runtv-FreePlayer',
     logo: 'image/logo.png',
     version: '1.0.3'
 };
@@ -246,11 +246,11 @@ const PLAYER_CONFIG = {
 
 // 增加错误信息本地化
 const ERROR_MESSAGES = {
-    NETWORK_ERROR: '网络连接错误，请检查网络设置',
-    TIMEOUT_ERROR: '请求超时，服务器响应时间过长',
-    API_ERROR: 'API接口返回错误，请尝试更换数据源',
-    PLAYER_ERROR: '播放器加载失败，请尝试其他视频源',
-    UNKNOWN_ERROR: '发生未知错误，请刷新页面重试'
+    NETWORK_ERROR: '網絡錯誤，請檢查網絡',
+    TIMEOUT_ERROR: '連接超時......',
+    API_ERROR: ' API炸了，試試別的源',
+    PLAYER_ERROR: '播放器boomer,試試別的源',
+    UNKNOWN_ERROR: '未知錯誤 刷新試試'
 };
 
 // 添加进一步安全设置
