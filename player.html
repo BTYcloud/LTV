@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="same-origin">
     <title>潤飛影視 - 播放器</title>
     <meta name="description" content="潤飛影視 - 無廣告、安全的視頻播放器，極速看片體驗。">
     <meta name="keywords" content="視頻播放器,免費視頻,潤飛影視">
@@ -20,6 +21,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <meta http-equiv="Cache-Control" content="no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -31,8 +36,125 @@
             color: #e5e7eb; /* text-neutral-200 */
             -webkit-font-smoothing: antialiased;
         }
+        .player-header-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background-color: #18181b; /* bg-zinc-900 */
+            border-bottom: 1px solid #27272a; /* border-zinc-800 */
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* shadow-md shadow-black/20 */
+        }
+        .home-button {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .logo-icon {
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
+            color: #a1a1aa; /* text-neutral-400 */
+            margin-right: 0.5rem; /* mr-2 */
+            transition: color 0.3s ease-in-out;
+        }
+        .home-button:hover .logo-icon {
+            color: #f5f5f5; /* hover:text-neutral-100 */
+        }
+        .logo-text {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+            color: #f5f5f5; /* text-neutral-100 */
+        }
+        #videoTitle {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 500; /* font-medium */
+            color: #f5f5f5; /* text-neutral-100 */
+            flex: 1;
+            text-align: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        #goBack {
+            padding: 0.5rem 1rem; /* px-4 py-2 */
+            background-color: #27272a; /* bg-zinc-800 */
+            border: 1px solid #3f3f46; /* border-zinc-700 */
+            border-radius: 0.75rem; /* rounded-lg */
+            color: #e5e7eb; /* text-neutral-200 */
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        #goBack:hover {
+            background-color: #3f3f46; /* hover:bg-zinc-700 */
+            color: #f5f5f5; /* hover:text-neutral-100 */
+        }
+        #goBack svg {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+            margin-right: 0.25rem; /* mr-1 */
+            fill: #e5e7eb; /* fill-neutral-200 */
+        }
+        #passwordModal {
+            background-color: rgba(0, 0, 0, 0.9); /* bg-black/90 */
+            backdrop-filter: blur(4px); /* backdrop-blur-sm */
+        }
+        #passwordModal > div {
+            background-color: #18181b; /* bg-zinc-900 */
+            border: 1px solid #27272a; /* border-zinc-800 */
+            border-radius: 1rem; /* rounded-2xl */
+            padding: 2rem; /* p-8 */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* shadow-2xl shadow-black/50 */
+            width: 90%;
+            max-width: 28rem; /* max-w-md */
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #passwordModal h2 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #f5f5f5; /* text-neutral-100 */
+        }
+        #passwordModal p {
+            color: #a1a1aa; /* text-neutral-400 */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        #passwordInput {
+            background-color: #27272a; /* bg-zinc-800 */
+            border: 1px solid #3f3f46; /* border-zinc-700 */
+            border-radius: 0.75rem; /* rounded-lg */
+            padding: 0.75rem 1rem; /* px-4 py-3 */
+            color: #e5e7eb; /* text-neutral-200 */
+            transition: border-color 0.3s ease-in-out;
+        }
+        #passwordInput:focus {
+            border-color: #2563eb; /* focus:border-blue-500 */
+        }
+        #passwordSubmitBtn {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: #ffffff; /* text-white */
+            padding: 0.5rem 1rem; /* px-4 py-2 */
+            border-radius: 0.75rem; /* rounded-lg */
+            font-weight: 600; /* font-semibold */
+            transition: background-color 0.3s ease-in-out;
+        }
+        #passwordSubmitBtn:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 */
+        }
+        #passwordError {
+            color: #ef4444; /* text-red-500 */
+            margin-top: 0.5rem; /* mt-2 */
+            text-align: center;
+        }
         .player-container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 1rem;
@@ -40,9 +162,36 @@
         #player {
             width: 100%;
             height: 60vh;
-            border-radius: 12px;
+            border-radius: 12px; /* rounded-xl */
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* shadow-lg shadow-black/20 */
+        }
+        .player-loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8); /* bg-black/80 */
+            backdrop-filter: blur(4px); /* backdrop-blur-sm */
+            flex-direction: column;
+            z-index: 100;
+        }
+        .player-loading-spinner {
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
+            border: 4px solid #71717a; /* border-neutral-500 */
+            border-top-color: #ffffff; /* border-t-white */
+            border-radius: 50%;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        #loading-title {
+            font-size: 1.125rem; /* text-lg */
+            color: #e5e7eb; /* text-neutral-200 */
         }
         .loading-container {
             position: absolute;
@@ -55,22 +204,18 @@
             justify-content: center;
             background-color: rgba(0, 0, 0, 0.8); /* bg-black/80 */
             backdrop-filter: blur(4px); /* backdrop-blur-sm */
-            color: #e5e7eb; /* text-neutral-200 */
-            z-index: 100;
             flex-direction: column;
+            z-index: 100;
             transition: opacity 0.3s ease-in-out;
         }
         .loading-spinner {
-            width: 32px;
-            height: 32px;
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
             border: 4px solid #71717a; /* border-neutral-500 */
             border-top-color: #ffffff; /* border-t-white */
             border-radius: 50%;
             animation: spin 1s ease-in-out infinite;
-            margin-bottom: 12px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            margin-bottom: 0.75rem; /* mb-3 */
         }
         .error-container {
             position: absolute;
@@ -83,173 +228,494 @@
             justify-content: center;
             background-color: rgba(0, 0, 0, 0.8); /* bg-black/80 */
             backdrop-filter: blur(4px); /* backdrop-blur-sm */
-            color: #e5e7eb; /* text-neutral-200 */
-            z-index: 100;
             flex-direction: column;
-            border-radius: 12px;
-        }
-        .control-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem;
-            background-color: #18181b; /* bg-zinc-900 */
+            z-index: 100;
             border-radius: 12px; /* rounded-xl */
-            margin-top: 1rem;
+        }
+        .error-icon {
+            font-size: 2rem; /* text-2xl */
+            color: #ef4444; /* text-red-500 */
+            margin-bottom: 0.5rem; /* mb-2 */
+        }
+        #error-message {
+            font-size: 1.125rem; /* text-lg */
+            color: #ef4444; /* text-red-500 */
+        }
+        .error-message-sub {
+            font-size: 0.875rem; /* text-sm */
+            color: #a1a1aa; /* text-neutral-400 */
+            margin-top: 0.25rem; /* mt-1 */
+        }
+        #resourceInfoBarContainer {
+            background-color: #18181b; /* bg-zinc-900 */
             border: 1px solid #27272a; /* border-zinc-800 */
+            border-radius: 0.75rem; /* rounded-lg */
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            margin-bottom: 0.5rem; /* mb-2 */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* shadow-md shadow-black/20 */
         }
-        .control-bar h2 {
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 500; /* font-medium */
-            color: #f5f5f5; /* text-neutral-100 */
-            margin: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .control-bar .toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .control-bar .toggle input {
-            appearance: none;
-            width: 48px;
-            height: 24px;
-            background-color: #3f3f46; /* bg-zinc-700 */
-            border-radius: 9999px;
-            position: relative;
-            cursor: pointer;
+        #prevButton, #nextButton {
+            padding: 0.5rem 1rem; /* px-4 py-2 */
+            background-color: #27272a; /* bg-zinc-800 */
+            border: 1px solid #3f3f46; /* border-zinc-700 */
+            border-radius: 0.75rem; /* rounded-lg */
+            color: #e5e7eb; /* text-neutral-200 */
             transition: background-color 0.3s ease-in-out;
         }
-        .control-bar .toggle input::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s ease-in-out;
+        #prevButton:hover, #nextButton:hover {
+            background-color: #3f3f46; /* hover:bg-zinc-700 */
         }
-        .control-bar .toggle input:checked {
-            background-color: #2563eb; /* bg-blue-600 */
+        #prevButton svg, #nextButton svg {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
         }
-        .control-bar .toggle input:checked::before {
-            transform: translateX(24px);
-        }
-        .control-bar .toggle label {
+        #episodeInfo {
             color: #a1a1aa; /* text-neutral-400 */
             font-size: 0.875rem; /* text-sm */
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 3rem; /* w-12 */
+            height: 1.5rem; /* h-6 */
+        }
+        .switch input {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3f3f46; /* bg-zinc-700 */
+            border-radius: 9999px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.25rem; /* h-5 */
+            width: 1.25rem; /* w-5 */
+            left: 0.125rem; /* left-0.5 */
+            top: 0.125rem; /* top-0.5 */
+            background-color: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s ease-in-out;
+        }
+        .switch input:checked + .slider {
+            background-color: #2563eb; /* bg-blue-600 */
+        }
+        .switch input:checked + .slider:before {
+            transform: translateX(1.5rem);
+        }
+        #autoplayToggle + span {
+            color: #a1a1aa; /* text-neutral-400 */
+            font-size: 0.875rem; /* text-sm */
+        }
+        button[onclick="toggleEpisodeOrder()"], button[onclick="copyLinks()"], #lockToggle {
+            padding: 0.25rem 0.75rem; /* px-3 py-1 */
+            background-color: #27272a; /* bg-zinc-800 */
+            border: 1px solid #3f3f46; /* border-zinc-700 */
+            border-radius: 0.75rem; /* rounded-lg */
+            color: #e5e7eb; /* text-neutral-200 */
+            display: flex;
+            align-items: center;
+            gap: 0.25rem; /* space-x-1 */
+            transition: background-color 0.3s ease-in-out;
+        }
+        button[onclick="toggleEpisodeOrder()"]:hover, button[onclick="copyLinks()"]:hover, #lockToggle:hover {
+            background-color: #3f3f46; /* hover:bg-zinc-700 */
+        }
+        button[onclick="toggleEpisodeOrder()"] svg, button[onclick="copyLinks()"] svg, #lockToggle svg {
+            width: 1rem; /* w-4 */
+            height: 1rem; /* h-4 */
+        }
+        #orderText {
+            font-size: 0.875rem; /* text-sm */
+        }
+        .episode-grid {
+            margin-top: 1rem; /* my-4 */
+        }
+        #episodesList {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem; /* gap-2 */
+        }
+        @media (min-width: 640px) {
+            #episodesList {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 768px) {
+            #episodesList {
+                grid-template-columns: repeat(6, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1024px) {
+            #episodesList {
+                grid-template-columns: repeat(8, minmax(0, 1fr));
+            }
+        }
+        #episodesList > div {
+            color: #a1a1aa; /* text-neutral-400 */
+            text-align: center;
+            padding: 2rem; /* py-8 */
+        }
+        .shortcut-hint {
+            position: fixed;
+            bottom: 1rem; /* bottom-4 */
+            left: 1rem; /* left-4 */
+            background-color: #27272a; /* bg-zinc-800 */
+            border: 1px solid #3f3f46; /* border-zinc-700 */
+            border-radius: 0.75rem; /* rounded-lg */
+            padding: 0.5rem 1rem; /* px-4 py-2 */
+            color: #e5e7eb; /* text-neutral-200 */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* space-x-2 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* shadow-md shadow-black/20 */
+        }
+        .shortcut-hint svg {
+            width: 1.5rem; /* w-6 */
+            height: 1.5rem; /* h-6 */
+        }
+        .footer {
+            margin-top: 0.5rem; /* mt-2 */
+            padding: 1.5rem 0; /* py-6 */
+            border-top: 1px solid #27272a; /* border-t-zinc-800 */
+            background-color: #09090b; /* bg-zinc-950 */
+        }
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem; /* px-4 */
+        }
+        .footer svg {
+            width: 1.5rem; /* w-6 */
+            height: 1.5rem; /* h-6 */
+            margin-right: 0.5rem; /* mr-2 */
+            color: #71717a; /* text-neutral-500 */
+        }
+        .footer span {
+            color: #d4d4d8; /* text-neutral-300 */
+            font-weight: 700; /* font-bold */
+        }
+        .footer p {
+            color: #71717a; /* text-neutral-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.5rem; /* mt-2 */
+        }
+        .footer a {
+            color: #3b82f6; /* text-blue-500 */
+            transition: color 0.3s ease-in-out;
+        }
+        .footer a:hover {
+            color: #60a5fa; /* hover:text-blue-400 */
+        }
+        #modal {
+            background-color: rgba(0, 0, 0, 0.8); /* bg-black/80 */
+            backdrop-filter: blur(4px); /* backdrop-blur-sm */
+        }
+        #modal > div {
+            background-color: #18181b; /* bg-zinc-900 */
+            border: 1px solid #27272a; /* border-zinc-800 */
+            border-radius: 1rem; /* rounded-2xl */
+            padding: 2rem; /* p-8 */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* shadow-2xl shadow-black/50 */
+            width: 90%;
+            max-width: 64rem; /* max-w-4xl */
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #modalTitle {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #f5f5f5; /* text-neutral-100 */
+            word-break: break-word;
+            padding-right: 1rem; /* pr-4 */
+            max-width: 80%;
+        }
+        #modal button {
+            color: #a1a1aa; /* text-neutral-400 */
+            font-size: 1.5rem; /* text-2xl */
+            transition: color 0.3s ease-in-out;
+        }
+        #modal button:hover {
+            color: #f5f5f5; /* hover:text-neutral-100 */
+        }
+        #loading {
+            background-color: rgba(0, 0, 0, 0.8); /* bg-black/80 */
+            backdrop-filter: blur(4px); /* backdrop-blur-sm */
+        }
+        #loading > div {
+            background-color: #18181b; /* bg-zinc-900 */
+            border: 1px solid #27272a; /* border-zinc-800 */
+            border-radius: 1rem; /* rounded-2xl */
+            padding: 2rem; /* p-8 */
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* space-x-4 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* shadow-lg shadow-black/20 */
+        }
+        #loading p {
+            font-size: 1.125rem; /* text-lg */
+            color: #e5e7eb; /* text-neutral-200 */
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="player-container">
-        <div id="player"></div>
-        <div class="loading-container" id="loadingContainer">
-            <div class="loading-spinner"></div>
-            <p class="text-lg text-neutral-200">加載...別急...</p>
+    <header class="player-header-fixed p-4 flex items-center border-b border-zinc-800 gap-2">
+        <div class="flex items-center min-w-0">
+            <button id="homeButton" type="button" class="flex items-center min-w-0 cursor-pointer home-button">
+                <svg class="w-8 h-8 mr-2 logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <h1 class="text-xl font-bold logo-text">潤飛影視</h1>
+            </button>
         </div>
-        <div class="error-container" id="errorContainer">
-            <p id="errorMessage" class="text-lg text-red-500">播放失敗，換個源試試！</p>
-        </div>
-        <div class="control-bar">
-            <h2 id="videoTitle" class="truncate">未知影片</h2>
-            <div class="toggle">
-                <input type="checkbox" id="autoplayToggle" class="cursor-pointer">
-                <label for="autoplayToggle" class="text-sm text-neutral-400">自動連播</label>
+        <h2 id="videoTitle" class="text-xl font-semibold flex-1 text-center overflow-x-auto whitespace-nowrap truncate custom-title-scroll"></h2>
+        <a href="#" id="goBack" onclick="goBack(event)" class="px-4 py-2 home-btn">
+            <svg class="w-5 h-5 mr-1" viewBox="0 0 24 24" fill="#e5e7eb" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.25 11h15a1.5 1.5 0 1 1 0 3H5.25a1.5 1.5 0 0 1 0-3z"/>
+                <path d="M5.55 12 11.3 17.3a1.5 1.5 0 1 1-2.12 2.12L3 12l6.18-6.18a1.5 1.5 0 1 1 2.12 2.12L5.55 12z"/>
+            </svg>
+            <span class="home-btn-text">返回</span>
+        </a>
+    </header>
+
+    <!-- 密码验证弹窗 -->
+    <div id="passwordModal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[65] transition-opacity duration-300">
+        <div class="bg-zinc-900 p-8 rounded-2xl w-11/12 max-w-md border border-zinc-800 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6 flex-none">
+                <h2 class="text-2xl font-bold">你知道密碼？</h2>
+            </div>
+            <div class="mb-6">
+                <p class="text-neutral-400 mb-4">說啊 錯一個字都不行</p>
+                <form id="passwordForm" onsubmit="handlePasswordSubmit(); return false;">
+                    <input type="text" name="username" id="username" autocomplete="username" style="display:none" tabindex="-1" aria-hidden="true">
+                    <input type="password" id="passwordInput" class="w-full bg-zinc-800 border border-zinc-700 text-neutral-200 px-4 py-3 rounded-lg focus:outline-none focus:border-blue-500 transition-colors" placeholder="密碼..." autocomplete="new-password">
+                    <button id="passwordSubmitBtn" type="submit" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">提交（錯了爆炸）</button>
+                </form>
+                <p id="passwordError" class="text-red-500 mt-2 hidden">不知道密碼就別亂按 SB</p>
             </div>
         </div>
     </div>
 
+    <main class="container mx-auto px-4 py-4">
+        <!-- 视频播放区 -->
+        <div id="playerContainer" class="player-container mb-4">
+            <div class="relative">
+                <div id="player" class="player-placeholder">
+                    <!-- Initial loading state before JavaScript loads -->
+                    <div class="player-loading-overlay">
+                        <div class="player-loading-spinner"></div>
+                        <div class="player-loading-text" id="loading-title">加載中啊...</div>
+                    </div>
+                </div>
+                <div class="loading-container" id="player-loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <div>還在加載...</div>
+                </div>
+                <div class="error-container" id="error">
+                    <div class="error-icon">⚠️</div>
+                    <div id="error-message">OMG 加載失敗辣！</div>
+                    <div class="error-message-sub">換個源試試吧 可能拉閘了 請反饋管理員</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 源信息 -->
+        <div class="player-container flex justify-between py-2 px-4 mb-2" id="resourceInfoBarContainer">
+            <!-- 资源信息卡片、切换按钮、视频数将由JS动态渲染 -->
+        </div>
+
+        <!-- 集数导航 -->
+        <div class="player-container">
+            <div class="flex justify-between items-center my-4">
+                <button onclick="playPreviousEpisode()" id="prevButton" class="px-4 py-2">
+                    <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    上一集
+                </button>
+                <span class="text-neutral-400" id="episodeInfo">別吉吉國王...</span>
+                <button onclick="playNextEpisode()" id="nextButton" class="px-4 py-2">
+                    下一集
+                    <svg class="w-5 h-5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 添加自动播放开关和排序按钮 -->
+        <div class="player-container mb-2">
+            <div class="flex flex-wrap justify-end items-center gap-2">
+                <!-- 自动连播开关 - 分组到左边 -->
+                <div class="flex items-center gap-1 flex-shrink-0 mr-auto">
+                    <span class="text-neutral-400 text-sm whitespace-nowrap">自動連播</span>
+                    <label class="switch">
+                        <input type="checkbox" id="autoplayToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <!-- 把各种功能按钮放在右侧 - 在小屏幕上各自占一行 -->
+                <div class="flex flex-wrap justify-end gap-2">
+                    <!-- 倒序排列按钮 -->
+                    <button onclick="toggleEpisodeOrder()" class="flex items-center space-x-1 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" id="orderIcon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd" />
+                        </svg>
+                        <span id="orderText">倒序連播</span>
+                    </button>
+                    
+                    <!-- 复制链接按钮 -->
+                    <button title="複製播放鏈接" onclick="copyLinks()" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 012-2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                    </button>
+                    
+                    <!-- 锁定控制按钮 - 始终显示在最右侧 -->
+                    <button id="lockToggle" onclick="toggleControlsLock()" title="鎖定控制" class="flex items-center">
+                        <svg id="lockIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11V7a3 3 0 00-6 0v4m-3 4h12v6H6v-6z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 集数网格 -->
+        <div class="player-container">
+            <div class="episode-grid" id="episodesGrid">
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2" id="episodesList">
+                    <div class="col-span-full text-center text-neutral-400 py-8">不要吉吉國王...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 添加快捷键提示元素 -->
+    <div class="shortcut-hint" id="shortcutHint">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="shortcutIcon">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span id="shortcutText"></span>
+    </div>
+
+    <!-- 页脚区域 -->
+    <footer class="footer mt-2 py-6 border-t border-zinc-800 bg-zinc-950">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center justify-center md:justify-start">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="text-neutral-300 font-bold">潤飛影視</span>
+                    </div>
+                    <p class="text-neutral-500 text-sm mt-2">© 2025 RUN TV - 自由看片，蜂享盜版</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-neutral-500 text-sm max-w-md">
+                        免責聲明：本站僅為視頻搜索工具，跟影片沒關係，搜出來是啥我也不知道啊。
+                        所有支援均來自第三方API。僅用於技術研究，如有侵權，請不要聯繫我。
+                    </p>
+                    <div class="mt-2 flex justify-center md:justify-end space-x-4">
+                        <a href="https://www.msf.hk/zh-hant/donate/general?type=one-off" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-400 text-sm transition-colors">捐款打賞</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 换源模态框 -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center transition-opacity duration-300 z-[10000]">
+        <div class="bg-zinc-900 p-8 rounded-2xl w-11/12 max-w-4xl border border-zinc-800 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-6 flex-none">
+                <h2 id="modalTitle" class="text-2xl font-bold break-words pr-4 max-w-[80%]"></h2>
+                <button onclick="closeModal()" class="text-neutral-400 hover:text-neutral-100 text-2xl transition-colors flex-shrink-0">&times;</button>
+            </div>
+            <div id="modalContent" class="overflow-auto flex-1 min-h-0">
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加 loading 提示框 -->
+    <div id="loading" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[10001]">
+        <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 flex items-center space-x-4">
+            <div class="w-8 h-8 border-4 border-neutral-500 border-t-white rounded-full animate-spin"></div>
+            <p class="text-neutral-200 text-lg">玩命加載中...吉吉國王個der...</p>
+        </div>
+    </div>
+
+    <!-- 引入纯 JS sha256（HTTP 下依然可用） -->
     <script src="libs/sha256.min.js"></script>
     <script>
         window._jsSha256 = window.sha256;
     </script>
+    
+    <script src="libs/hls.min.js" crossorigin="anonymous"></script>
+    <script src="libs/artplayer.min.js" crossorigin="anonymous"></script>
+
     <script src="js/config.js"></script>
+    <script src="js/customer_site.js"></script>
+    <script src="js/password.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/search.js"></script>
     <script src="js/player.js"></script>
+
     <script>
-        let dp;
-        let currentVideoTitle = '未知影片';
-        let currentEpisodeIndex = 0;
-        let currentEpisodes = [];
-        let episodesReversed = false;
-        let autoplayEnabled = true;
-        let adFilteringEnabled = true;
-        let userClickedPosition = 0;
-        let progressSaveInterval = null;
+        window.__ENV__ = window.__ENV__ || {};
+        window.__ENV__.PASSWORD = "{{PASSWORD}}";
+        window.__ENV__.ADMINPASSWORD = "{{ADMINPASSWORD}}";
 
         document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoUrl = urlParams.get('url');
-            const title = urlParams.get('title');
-            const index = parseInt(urlParams.get('index') || '0');
-
-            currentVideoTitle = title || localStorage.getItem('currentVideoTitle') || '未知影片';
-            currentEpisodeIndex = index;
-
-            autoplayEnabled = localStorage.getItem('autoplayEnabled') !== 'false';
-            document.getElementById('autoplayToggle').checked = autoplayEnabled;
-
-            adFilteringEnabled = localStorage.getItem(PLAYER_CONFIG.adFilteringStorage) !== 'false';
-
-            try {
-                currentEpisodes = JSON.parse(localStorage.getItem('currentEpisodes') || '[]');
-                episodesReversed = localStorage.getItem('episodesReversed') === 'true';
-            } catch (e) {
-                console.error('獲取集數信息失敗:', e);
-                currentEpisodes = [];
-                episodesReversed = false;
-            }
-
-            document.title = currentVideoTitle + ' - 潤飛影視';
-            document.getElementById('videoTitle').textContent = currentVideoTitle;
-
-            document.getElementById('autoplayToggle').addEventListener('change', function(e) {
-                autoplayEnabled = e.target.checked;
-                localStorage.setItem('autoplayEnabled', autoplayEnabled);
-            });
-
-            // 假設 initDPlayer 在 js/player.js 中定義
-            if (typeof initDPlayer === 'function') {
-                initDPlayer(videoUrl);
-            } else {
-                console.error('initDPlayer 未定義，請檢查 js/player.js');
-                document.getElementById('errorContainer').style.display = 'flex';
-                document.getElementById('errorMessage').textContent = '播放器初始化失敗，請檢查配置！';
-            }
-
-            function saveToHistory() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const sourceName = urlParams.get('source') || '';
-                let currentPosition = 0;
-                let videoDuration = 0;
-
-                if (dp && dp.video) {
-                    currentPosition = dp.video.currentTime;
-                    videoDuration = dp.video.duration;
+            document.body.addEventListener('click', function(event) {
+                const homeButton = event.target.closest('#homeButton');
+                if (homeButton) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (window.self !== window.top) {
+                        try {
+                            window.parent.closeVideoPlayer && window.parent.closeVideoPlayer(true);
+                            return;
+                        } catch (e) {
+                            console.error('调用父窗口closeVideoPlayer失败:', e);
+                        }
+                    }
+                    try {
+                        window.location.href = '/';
+                    } catch (e) {
+                        try {
+                            window.location.replace('/');
+                        } catch (e2) {
+                            window.location.assign('/');
+                        }
+                    }
+                    return false;
                 }
-
-                const videoInfo = {
-                    title: currentVideoTitle,
-                    url: `player.html?title=${encodeURIComponent(currentVideoTitle)}&source=${encodeURIComponent(sourceName)}&index=${currentEpisodeIndex}`,
-                    episodeIndex: currentEpisodeIndex,
-                    sourceName: sourceName,
-                    timestamp: Date.now(),
-                    playbackPosition: currentPosition > 10 ? currentPosition : 0,
-                };
-
-                let history = JSON.parse(localStorage.getItem('viewingHistory') || '[]');
-                history = history.filter(item => item.url !== videoInfo.url);
-                history.unshift(videoInfo);
-                localStorage.setItem('viewingHistory', JSON.stringify(history));
-            }
-
-            window.addEventListener('beforeunload', saveToHistory);
+            });
         });
     </script>
+
+    <!-- 版本检测脚本 -->
+    <script src="js/version-check.js"></script>
+    <script src="js/index-page.js"></script>
 </body>
 </html>
