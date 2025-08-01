@@ -26,6 +26,7 @@ async function fetchVersion(url, errorMessage, options = {}) {
     return await response.text();
 }
 
+/*換成grok的支持自定義版本格式
 // 版本检查函数
 async function checkForUpdates() {
     try {
@@ -116,7 +117,81 @@ function createErrorVersionElement(errorMessage) {
     errorElement.title = errorMessage;
     return errorElement;
 }
+*/
+////--------以下AI編寫
 
+// 版本检查函数
+async function checkForUpdates() {
+    try {
+        // 获取当前版本
+        const currentVersion = await fetchVersion('/VERSION.txt', '获取当前版本失败', {
+            cache: 'no-store'
+        });
+
+        // 清理版本字符串（移除可能的空格或换行符）
+        const cleanCurrentVersion = currentVersion.trim();
+
+        // 返回版本信息（不比较最新版本）
+        return {
+            current: cleanCurrentVersion,
+            latest: cleanCurrentVersion, // 最新版本设为当前版本，避免比较
+            hasUpdate: false, // 不进行版本比较
+            currentFormatted: formatVersion(cleanCurrentVersion),
+            latestFormatted: formatVersion(cleanCurrentVersion)
+        };
+    } catch (error) {
+        console.error('版本检测出错:', error);
+        throw error;
+    }
+}
+
+// 格式化版本号为支持自定义格式
+function formatVersion(versionString) {
+    // 检测版本字符串是否有效
+    if (!versionString) {
+        return '未知版本';
+    }
+
+    // 清理版本字符串
+    const cleanedString = versionString.trim();
+
+    // 支持自定义格式 (例如 beta0.3.05 -> Beta 0.3.05)
+    if (cleanedString.toLowerCase().startsWith('beta')) {
+        const versionParts = cleanedString.split('.');
+        if (versionParts.length >= 2) {
+            const major = versionParts[0].replace('beta', 'Beta');
+            const minor = versionParts[1];
+            const patch = versionParts[2] || '00'; // 默认补0
+            return `${major} ${minor}.${patch}`;
+        }
+        return cleanedString; // fallback
+    }
+
+    // 格式化标准12位版本号
+    if (cleanedString.length === 12) {
+        const year = cleanedString.substring(0, 4);
+        const month = cleanedString.substring(4, 6);
+        const day = cleanedString.substring(6, 8);
+        const hour = cleanedString.substring(8, 10);
+        const minute = cleanedString.substring(10, 12);
+        return `${year}-${month}-${day} ${hour}:${minute}`;
+    }
+
+    // 其他格式直接返回
+    return cleanedString;
+}
+
+// 创建错误版本信息元素
+function createErrorVersionElement(errorMessage) {
+    const errorElement = document.createElement('p');
+    element.className = 'text-gray-500 text-sm mt-1 text-center md:text-left'; // 修正变量名
+    element.innerHTML = `版本: <span class="text-amber-500">检测失败</span>`;
+    element.title = errorMessage;
+    return element; // 修正变量名
+}
+
+//--------以上AI編寫
+        
 // 添加版本信息到页脚
 function addVersionInfoToFooter() {
     checkForUpdates().then(result => {
