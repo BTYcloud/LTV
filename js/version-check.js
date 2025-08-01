@@ -3,12 +3,8 @@
     const style = document.createElement('style');
     style.textContent = `
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
         .animate-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -26,7 +22,6 @@ async function fetchVersion(url, errorMessage, options = {}) {
     return await response.text();
 }
 
-/*換成grok的支持自定義版本格式
 // 版本检查函数
 async function checkForUpdates() {
     try {
@@ -34,7 +29,7 @@ async function checkForUpdates() {
         const currentVersion = await fetchVersion('/VERSION.txt', '获取当前版本失败', {
             cache: 'no-store'
         });
-        
+
         // 获取最新版本
         let latestVersion;
         const VERSION_URL = {
@@ -42,40 +37,30 @@ async function checkForUpdates() {
             DIRECT: 'https://raw.githubusercontent.com/BTYcloud/LTV/tree/main/VERSION.txt'
         };
         const FETCH_TIMEOUT = 1500;
-        
+
         try {
             // 尝试使用代理URL获取最新版本
             const proxyPromise = fetchVersion(VERSION_URL.PROXY, '代理请求失败');
             const timeoutPromise = new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('代理请求超时')), FETCH_TIMEOUT)
             );
-            
             latestVersion = await Promise.race([proxyPromise, timeoutPromise]);
             console.log('通过代理服务器获取版本成功');
         } catch (error) {
             console.log('代理请求失败，尝试直接请求:', error.message);
-            try {
-                // 代理失败后尝试直接获取
-                latestVersion = await fetchVersion(VERSION_URL.DIRECT, '获取最新版本失败');
-                console.log('直接请求获取版本成功');
-            } catch (directError) {
-                console.error('所有版本检查请求均失败:', directError);
-                throw new Error('无法获取最新版本信息');
-            }
+            latestVersion = await fetchVersion(VERSION_URL.DIRECT, '获取最新版本失败');
+            console.log('直接请求获取版本成功');
         }
-        
-        console.log('当前版本:', currentVersion);
-        console.log('最新版本:', latestVersion);
-        
-        // 清理版本字符串（移除可能的空格或换行符）
+
+        // 清理版本字符串
         const cleanCurrentVersion = currentVersion.trim();
         const cleanLatestVersion = latestVersion.trim();
-        
-        // 返回版本信息
+
+        // 返回版本信息（使用字符串比较）
         return {
             current: cleanCurrentVersion,
             latest: cleanLatestVersion,
-            hasUpdate: parseInt(cleanLatestVersion) > parseInt(cleanCurrentVersion),
+            hasUpdate: cleanLatestVersion.localeCompare(cleanCurrentVersion) > 0, // 字符串比较
             currentFormatted: formatVersion(cleanCurrentVersion),
             latestFormatted: formatVersion(cleanLatestVersion)
         };
@@ -85,16 +70,25 @@ async function checkForUpdates() {
     }
 }
 
-// 格式化版本号为可读形式 (yyyyMMddhhmm -> yyyy-MM-dd hh:mm)
+// 格式化版本号为支持自定义格式
 function formatVersion(versionString) {
-    // 检测版本字符串是否有效
     if (!versionString) {
         return '未知版本';
     }
-    
-    // 清理版本字符串（移除可能的空格或换行符）
     const cleanedString = versionString.trim();
-    
+
+    // 支持自定义格式 (例如 beta0.3.05 -> Beta 0.3.05)
+    if (cleanedString.toLowerCase().startsWith('beta')) {
+        const versionParts = cleanedString.split('.');
+        if (versionParts.length >= 2) {
+            const major = versionParts[0].replace('beta', 'Beta');
+            const minor = versionParts[1];
+            const patch = versionParts[2] || '00';
+            return `${major} ${minor}.${patch}`;
+        }
+        return cleanedString;
+    }
+
     // 格式化标准12位版本号
     if (cleanedString.length === 12) {
         const year = cleanedString.substring(0, 4);
@@ -102,10 +96,9 @@ function formatVersion(versionString) {
         const day = cleanedString.substring(6, 8);
         const hour = cleanedString.substring(8, 10);
         const minute = cleanedString.substring(10, 12);
-        
         return `${year}-${month}-${day} ${hour}:${minute}`;
     }
-    
+
     return cleanedString;
 }
 
@@ -117,100 +110,20 @@ function createErrorVersionElement(errorMessage) {
     errorElement.title = errorMessage;
     return errorElement;
 }
-*/
-////--------以下AI編寫
 
-// 版本检查函数
-async function checkForUpdates() {
-    try {
-        // 获取当前版本
-        const currentVersion = await fetchVersion('/VERSION.txt', '获取当前版本失败', {
-            cache: 'no-store'
-        });
-
-        // 清理版本字符串（移除可能的空格或换行符）
-        const cleanCurrentVersion = currentVersion.trim();
-
-        // 返回版本信息（不比较最新版本）
-        return {
-            current: cleanCurrentVersion,
-            latest: cleanCurrentVersion, // 最新版本设为当前版本，避免比较
-            hasUpdate: false, // 不进行版本比较
-            currentFormatted: formatVersion(cleanCurrentVersion),
-            latestFormatted: formatVersion(cleanCurrentVersion)
-        };
-    } catch (error) {
-        console.error('版本检测出错:', error);
-        throw error;
-    }
-}
-
-// 格式化版本号为支持自定义格式
-function formatVersion(versionString) {
-    // 检测版本字符串是否有效
-    if (!versionString) {
-        return '未知版本';
-    }
-
-    // 清理版本字符串
-    const cleanedString = versionString.trim();
-
-    // 支持自定义格式 (例如 beta0.3.05 -> Beta 0.3.05)
-    if (cleanedString.toLowerCase().startsWith('beta')) {
-        const versionParts = cleanedString.split('.');
-        if (versionParts.length >= 2) {
-            const major = versionParts[0].replace('beta', 'Beta');
-            const minor = versionParts[1];
-            const patch = versionParts[2] || '00'; // 默认补0
-            return `${major} ${minor}.${patch}`;
-        }
-        return cleanedString; // fallback
-    }
-
-    // 格式化标准12位版本号
-    if (cleanedString.length === 12) {
-        const year = cleanedString.substring(0, 4);
-        const month = cleanedString.substring(4, 6);
-        const day = cleanedString.substring(6, 8);
-        const hour = cleanedString.substring(8, 10);
-        const minute = cleanedString.substring(10, 12);
-        return `${year}-${month}-${day} ${hour}:${minute}`;
-    }
-
-    // 其他格式直接返回
-    return cleanedString;
-}
-
-// 创建错误版本信息元素
-function createErrorVersionElement(errorMessage) {
-    const errorElement = document.createElement('p');
-    element.className = 'text-gray-500 text-sm mt-1 text-center md:text-left'; // 修正变量名
-    element.innerHTML = `版本: <span class="text-amber-500">检测失败</span>`;
-    element.title = errorMessage;
-    return element; // 修正变量名
-}
-
-//--------以上AI編寫
-        
 // 添加版本信息到页脚
 function addVersionInfoToFooter() {
     checkForUpdates().then(result => {
         if (!result) {
-            // 如果版本检测失败，显示错误信息
             const versionElement = createErrorVersionElement();
-            // 在页脚显示错误元素
             displayVersionElement(versionElement);
             return;
         }
-        
-        // 创建版本信息元素
+
         const versionElement = document.createElement('p');
         versionElement.className = 'text-gray-500 text-sm mt-1 text-center md:text-left';
-        
-        // 添加当前版本信息
         versionElement.innerHTML = `版本: ${result.currentFormatted}`;
-        
-        // 如果有更新，添加更新提示
+
         if (result.hasUpdate) {
             versionElement.innerHTML += ` <span class="inline-flex items-center bg-red-600 text-white text-xs px-2 py-0.5 rounded-md ml-1 cursor-pointer animate-pulse font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -218,25 +131,21 @@ function addVersionInfoToFooter() {
                 </svg>
                 发现新版
             </span>`;
-            
             setTimeout(() => {
                 const updateBtn = versionElement.querySelector('span');
                 if (updateBtn) {
                     updateBtn.addEventListener('click', () => {
-                        window.open('https://github.com/LibreSpark/LibreTV', '_blank');
+                        window.open('https://github.com/BTYcloud/LTV', '_blank'); // 指向您的仓库
                     });
                 }
             }, 100);
         } else {
-            // 如果没有更新，显示当前版本为最新版本
-            versionElement.innerHTML = `版本: ${result.currentFormatted} <span class="text-green-500">(最新版本)</span>`;
+            versionElement.innerHTML += ` <span class="text-green-500">(最新版本)</span>`;
         }
-        
-        // 显示版本元素
+
         displayVersionElement(versionElement);
     }).catch(error => {
         console.error('版本检测出错:', error);
-        // 创建错误版本信息元素并显示
         const errorElement = createErrorVersionElement(`错误信息: ${error.message}`);
         displayVersionElement(errorElement);
     });
@@ -244,13 +153,10 @@ function addVersionInfoToFooter() {
 
 // 在页脚显示版本元素的辅助函数
 function displayVersionElement(element) {
-    // 获取页脚元素
     const footerElement = document.querySelector('.footer p.text-gray-500.text-sm');
     if (footerElement) {
-        // 在原版权信息后插入版本信息
         footerElement.insertAdjacentElement('afterend', element);
     } else {
-        // 如果找不到页脚元素，尝试在页脚区域最后添加
         const footer = document.querySelector('.footer .container');
         if (footer) {
             footer.querySelector('div').appendChild(element);
