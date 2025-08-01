@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>潤飛TV - 充電2小時，看片2分鐘。</title>
+    <meta name="description" content="潤飛TV-无广告、安全，提供多個源的免費內容搜索與觀看，無需註冊（不會寫用戶管理代碼）。">
+    <meta name="keywords" content="在线视频,免费视频,视频搜索,电影,电视剧,潤飛TV">
+    <meta name="author" content="RUN Team">
+
+    <link rel="icon" href="image/logo.png">
+    <link rel="apple-touch-icon" href="image/logo-black.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <script src="libs/tailwindcss.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 增加一個簡單的字體設定 */
+        body { font-family: 'Noto Sans TC', sans-serif; }
+    </style>
+</head>
+<body class="bg-zinc-950 text-neutral-200">
+    <div class="fixed top-4 left-4 z-50">
+        <button onclick="toggleHistory(event)" class="bg-zinc-800/50 hover:bg-zinc-700/70 border border-zinc-700/80 backdrop-blur-sm rounded-xl p-2.5 transition-colors" aria-label="觀看歷史">
+            <svg class="w-5 h-5 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="fixed top-4 right-4 z-50">
+        <button onclick="toggleSettings(event)" class="bg-zinc-800/50 hover:bg-zinc-700/70 border border-zinc-700/80 backdrop-blur-sm rounded-xl p-2.5 transition-colors" aria-label="打开设置">
+            <svg class="w-5 h-5 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <div id="historyPanel" class="history-panel fixed left-0 top-0 h-full bg-zinc-900 border-r border-zinc-800 p-6 z-[60] transform -translate-x-full transition-transform duration-300" aria-label="觀看歷史" aria-hidden="true">
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="toggleHistory()" class="close-btn text-neutral-400 hover:text-white">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <h3 class="text-xl font-semibold text-neutral-200 mx-auto">觀看歷史</h3>
+            <div class="w-6"></div> </div>
+        <div id="historyList" class="pb-4">
+            <div class="text-center text-neutral-500 py-8">暫無觀看記錄</div>
+        </div>
+        <div class="mt-4 text-center sticky bottom-0 pb-2 pt-4 bg-zinc-900">
+            <button onclick="clearViewingHistory()" class="px-4 py-2 w-full bg-red-600/90 hover:bg-red-700 text-white rounded-xl font-medium text-sm transition-colors duration-200 shadow-md hover:shadow-lg shadow-red-900/50">
+                清空歷史記錄
+            </button>
+        </div>
+    </div>
+
+    <div id="settingsPanel" class="settings-panel fixed right-0 top-0 h-full w-80 bg-zinc-900 border-l border-zinc-800 p-6 z-[60] overflow-y-auto" aria-label="设置面板" aria-hidden="true">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-semibold text-neutral-200">設定</h3>
+            <button onclick="toggleSettings()" class="close-btn text-neutral-400 hover:text-white">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="space-y-6">
+            <div class="p-4 bg-zinc-800/50 rounded-xl">
+                <label class="block text-base font-medium text-neutral-300 mb-3 border-b border-zinc-700 pb-2">數據源設定</label>
+                <div class="flex space-x-2 mb-3">
+                    <button onclick="selectAllAPIs(true)" class="px-3 py-1 bg-zinc-700 hover:bg-zinc-600 text-neutral-200 text-xs rounded-md transition-colors">全選</button>
+                    <button onclick="selectAllAPIs(false)" class="px-3 py-1 bg-zinc-700 hover:bg-zinc-600 text-neutral-200 text-xs rounded-md transition-colors">全不選</button>
+                    <button onclick="selectAllAPIs(true, true)" class="px-3 py-1 bg-zinc-700 hover:bg-zinc-600 text-neutral-200 text-xs rounded-md transition-colors">全選普通</button>
+                </div>
+                <div class="max-h-40 overflow-y-auto bg-zinc-900 p-2 rounded-lg mb-3">
+                    <div id="apiCheckboxes"></div>
+                </div>
+                <div class="text-xs text-neutral-500 flex justify-between items-center">
+                    <span>已選API數量：<span id="selectedApiCount" class="text-neutral-200 font-medium">0</span></span>
+                    <span id="siteStatus" class="ml-2"></span>
+                </div>
+            </div>
+
+            <div class="p-4 bg-zinc-800/50 rounded-xl">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-base font-medium text-neutral-300 w-full pb-1">自訂API</label>
+                    <button onclick="showAddCustomApiForm()" class="bg-zinc-700 hover:bg-zinc-600 text-white w-7 h-7 rounded-full flex-shrink-0 text-center text-lg">+</button>
+                </div>
+                <div id="customApisList" class="max-h-32 overflow-y-auto mb-2"></div>
+                <div id="addCustomApiForm" class="hidden mt-2 p-3 bg-zinc-900/70 rounded-lg space-y-3">
+                    <input type="text" id="customApiName" placeholder="API名稱" class="w-full bg-zinc-800 border border-zinc-700 text-neutral-200 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500 transition-colors" autocomplete="off">
+                    <input type="text" id="customApiUrl" placeholder="https://api.example.com" class="w-full bg-zinc-800 border border-zinc-700 text-neutral-200 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500 transition-colors" autocomplete="off">
+                    <input type="text" id="customApiDetail" placeholder="Detail 地址（可選）" class="w-full bg-zinc-800 border border-zinc-700 text-neutral-200 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500 transition-colors" autocomplete="off">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="customApiIsAdult" class="form-checkbox h-4 w-4 text-pink-500 bg-zinc-700 border-zinc-600 rounded">
+                        <label for="customApiIsAdult" class="ml-2 text-sm text-pink-400">黃色資源站</label>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="addCustomApi()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm font-medium">添加</button>
+                        <button onclick="cancelAddCustomApi()" class="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-1.5 rounded-md text-sm">取消</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-zinc-800/50 rounded-xl space-y-4">
+                 <label class="block text-base font-medium text-neutral-300 mb-1 border-b border-zinc-700 pb-2">功能開關</label>
+                 <div class="flex flex-col space-y-4">
+                     <div class="flex items-center justify-between">
+                         <div>
+                             <label class="text-sm font-medium text-neutral-300">黃色內容過濾</label>
+                             <p class="text-xs text-neutral-500 mt-1">過濾"倫理片"等黃色內容</p>
+                         </div>
+                         <div class="relative inline-block w-12 align-middle select-none">
+                             <input type="checkbox" id="yellowFilterToggle" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                             <div class="toggle-bg bg-zinc-700 w-12 h-6 rounded-full transition-colors duration-300"></div>
+                             <div class="toggle-dot absolute w-5 h-5 bg-white rounded-full top-0.5 left-0.5 transition-transform duration-300"></div>
+                         </div>
+                     </div>
+                     <div class="flex items-center justify-between">
+                         <div>
+                             <label class="text-sm font-medium text-neutral-300">分片廣告過濾</label>
+                             <p class="text-xs text-neutral-500 mt-1">關閉可減少舊版瀏覽器卡頓</p>
+                         </div>
+                         <div class="relative inline-block w-12 align-middle select-none">
+                             <input type="checkbox" id="adFilterToggle" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                             <div class="toggle-bg bg-zinc-700 w-12 h-6 rounded-full transition-colors duration-300"></div>
+                             <div class="toggle-dot absolute w-5 h-5 bg-white rounded-full top-0.5 left-0.5 transition-transform duration-300"></div>
+                         </div>
+                     </div>
+                     <div class="flex items-center justify-between">
+                         <div>
+                             <label class="text-sm font-medium text-neutral-300">豆瓣熱門推薦</label>
+                             <p class="text-xs text-neutral-500 mt-1">首頁顯示豆瓣熱門影視內容</p>
+                         </div>
+                         <div class="relative inline-block w-12 align-middle select-none">
+                             <input type="checkbox" id="doubanToggle" class="opacity-0 absolute w-full h-full cursor-pointer z-10">
+                             <div class="toggle-bg bg-zinc-700 w-12 h-6 rounded-full transition-colors duration-300"></div>
+                             <div class="toggle-dot absolute w-5 h-5 bg-white rounded-full top-0.5 left-0.5 transition-transform duration-300"></div>
+                         </div>
+                     </div>
+                 </div>
+                 <div id="yellowFilterWarningContainer" class="relative"></div> </div>
+
+            <div class="p-4 bg-zinc-800/50 rounded-xl space-y-2">
+                <label class="block text-base font-medium text-neutral-300 mb-2 border-b border-zinc-700 pb-2">一般功能</label>
+                <button onclick="importConfig()" class="w-full bg-zinc-700 hover:bg-zinc-600 text-neutral-200 py-2 rounded-lg text-sm font-medium transition-colors">導入配置</button>
+                <button onclick="exportConfig()" class="w-full bg-zinc-700 hover:bg-zinc-600 text-neutral-200 py-2 rounded-lg text-sm font-medium transition-colors">導出配置</button>
+                <button onclick="clearLocalStorage()" class="w-full bg-zinc-700 hover:bg-zinc-600 text-neutral-200 py-2 rounded-lg text-sm font-medium transition-colors">清除Cookie</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col min-h-screen">
+        <div class="flex-1 flex flex-col items-center">
+            <header class="text-center my-12 md:my-16">
+                <a href="#" onclick="resetToHome(); return false;" class="inline-flex items-center group">
+                    <!--原本的攝像機元素 svg區域
+                    <svg class="w-10 h-10 mr-3 text-neutral-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    -->
+                    <img src="https://raw.githubusercontent.com/BTYcloud/LTV/main/image/logo.png" alt="Logo" class="h-12 mr-4">
+                    <h1 class="text-4xl sm:text-5xl font-bold text-neutral-100">潤飛TV_Beta3.04</h1>
+                </a>
+                <p class="text-neutral-400 mt-4 text-sm sm:text-base">自由看片，蜂享盜版</p>
+            </header>
+            
+            <main id="searchArea" class="w-full flex-grow flex flex-col items-center justify-start">
+                <div class="w-full max-w-2xl">
+                    <div class="flex items-stretch h-14 bg-zinc-900 border border-zinc-700 rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+                        <button onclick="resetToHome()" class="w-20 sm:w-24 flex items-center justify-center bg-zinc-800/50 text-neutral-300 font-medium hover:bg-zinc-700/50 transition-colors" aria-label="返回首頁" title="返回首頁">
+                            首頁
+                        </button>
+                        <div class="relative flex-1">
+                            <input type="text" id="searchInput" class="w-full h-full bg-transparent text-white px-5 focus:outline-none" placeholder="搜不到可以少几个字，不要错漏/改顺序，能力有限..." autocomplete="off" aria-label="影片搜索框" oninput="toggleClearButton()">
+                            <button id="clearSearchInput" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-500 hover:text-white hidden transition-colors" onclick="clearSearchInput()" aria-label="清空搜索框" title="清空搜索框">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <button onclick="search()" class="w-20 sm:w-24 flex items-center justify-center bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors" aria-label="搜索按钮">
+                            搜索
+                        </button>
+                    </div>
+                    
+                    <div id="recentSearches" class="mt-4 flex flex-wrap gap-2 justify-center" aria-label="最近搜索记录"></div>
+                </div>
+            </main>
+            
+            <div id="doubanArea" class="w-full my-8 hidden">
+                <div class="mx-auto max-w-screen-xl px-2">
+                    <div class="mb-4">
+                        <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
+                            <div class="flex items-center">
+                                <h2 class="text-2xl font-semibold text-white mr-4">豆瓣熱門</h2>
+                                <div class="flex items-center bg-zinc-800 rounded-full p-1">
+                                    <button id="douban-movie-toggle" class="px-4 py-1 text-sm rounded-full bg-zinc-600 text-white">電影</button>
+                                    <button id="douban-tv-toggle" class="px-4 py-1 text-sm rounded-full text-neutral-400 hover:text-white">電視劇</button>
+                                </div>
+                            </div>
+                            <button id="douban-refresh" class="text-sm px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-neutral-200 rounded-lg flex items-center gap-2 transition-colors">
+                                <span>換一批</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto pb-2">
+                            <div id="douban-tags" class="flex space-x-2 min-w-max"></div>
+                        </div>
+                    </div>
+                    <div id="douban-results" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3"></div>
+                </div>
+            </div>
+            
+            <div id="resultsArea" class="w-full hidden">
+                <div class="mx-auto max-w-7xl px-2">
+                    <div class="flex justify-end items-center mb-4">
+                        <div class="text-sm text-neutral-400">
+                            <span id="searchResultsCount">0</span> 個結果
+                        </div>
+                    </div>
+                    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-8 border-t border-zinc-800 bg-zinc-950">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
+                <div>
+                    <div class="flex items-center justify-center md:justify-start">
+                        <svg class="w-6 h-6 mr-2 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="text-neutral-300 font-bold">潤飛TV</span>
+                    </div>
+                    <p class="text-neutral-500 text-sm mt-2">© 2025 RUN TV - 自由看片，蜂享盜版</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-neutral-500 text-sm max-w-md">
+                        免責聲明：本站僅為視頻搜索工具，不存儲、上傳或分發任何影片內容。所有影片均來自第三方API。僅供學習用途，如有侵權，請不要聯繫我。
+                    </p>
+                    <div class="mt-2 flex justify-center md:justify-end space-x-4">
+                        <a href="https://www.msf.hk/zh-hant/donate/general?type=one-off" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-400 text-sm transition-colors">捐款打賞</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- index.html -->
+<div id="modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center transition-opacity duration-300 z-[1000] p-4">
+    <div class="bg-zinc-900 p-6 sm:p-8 rounded-2xl w-full max-w-4xl border border-zinc-800 max-h-[90vh] flex flex-col shadow-2xl shadow-black/50">
+        <div class="flex justify-between items-center mb-6 flex-none">
+            <h2 id="modalTitle" class="text-2xl font-semibold text-neutral-100 break-words pr-4 max-w-[80%]"></h2>
+            <button onclick="closeModal()" class="text-neutral-400 hover:text-neutral-100 text-3xl transition-colors flex-shrink-0">&times;</button>
+        </div>
+        <div id="modalContent" class="overflow-auto flex-1 min-h-0">
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2"></div>
+        </div>
+    </div>
+</div>
+    
+    <div id="passwordModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-[80] transition-opacity duration-300 p-4">
+        <div class="bg-zinc-900 p-8 rounded-2xl w-11/12 max-w-md border border-zinc-800 flex flex-col shadow-2xl shadow-black/50">
+            <div class="flex justify-between items-center mb-6 flex-none">
+                <h2 class="text-2xl font-semibold text-neutral-100">芝麻開門代碼</h2>
+            </div>
+            <div class="mb-6">
+                <p class="text-neutral-400 mb-4">不知道密碼你看個der</p>
+                <form id="passwordForm" onsubmit="handlePasswordSubmit(); return false;">
+                    <input type="text" name="username" id="username" autocomplete="username" style="display:none" tabindex="-1" aria-hidden="true">
+                    <input type="password" id="passwordInput" class="w-full bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" placeholder="密碼肯定不是114514..." autocomplete="new-password">
+                    <div class="mt-6 w-full flex space-x-4">
+                        <button id="passwordSubmitBtn" type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">密碼應該是這個</button>
+                        <button id="passwordCancelBtn" type="button" onclick="hidePasswordModal()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">我滾蛋</button>
+                    </div>
+                </form>
+                <p id="passwordError" class="text-red-500 mt-4 text-center hidden">有內鬼！取消交易！</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="disclaimerModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-[75] p-4">
+        <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-black/50">
+            <h2 class="text-2xl font-semibold text-neutral-100 mb-6 text-center">使用聲明</h2>
+            <div class="text-neutral-300 space-y-4">
+                <p>歡迎使用 Run TV。在使用前，請您瞭解並同意以下條款：</p>
+                <p><strong class="text-blue-400">服務性質：</strong> RunTV 僅用於學習演示，不提供任何影片內容。所有搜索結果均來自第三方公開接口，說白了我沒有資源。</p>
+                <p><strong class="text-blue-400">免責聲明：</strong> RunTV 並不對外開放，通過任何方式訪問本站均為個人行為，一切後果自行負責。</p>
+                <p><strong class="text-blue-400">廣告風險提示：</strong> 本站所有資源均來自第三方，影片裡的廣告沒法去掉（類似字幕一樣），謹防上當受騙。</p>
+            </div>
+            <div class="mt-8 flex justify-center">
+                <button id="acceptDisclaimerBtn" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-900/50 transition-all duration-300">
+                    啊來來來我同意！
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg transform transition-all duration-300 opacity-0 -translate-y-12 z-[90]">
+        <p id="toastMessage"></p>
+    </div>
+
+    <div id="loading" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-[85]">
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 border-4 border-neutral-500 border-t-white rounded-full animate-spin"></div>
+            <p class="text-white text-lg">加載...別急...</p>
+        </div>
+    </div>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "潤飛TV",
+        "url": "https://runtv.top/",
+        "description": "有個偉大朋友在硬幣背後...",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://runtv.top/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+
+    <script src="libs/sha256.min.js"></script>
+    <script>
+        window._jsSha256 = window.sha256;
+    </script>
+    <script src="js/config.js"></script>
+    <script src="js/customer_site.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/douban.js"></script>
+    <script src="js/password.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/pwa-register.js"></script>
+    <script>
+        window.__ENV__ = window.__ENV__ || {};
+        window.__ENV__.PASSWORD = "{{PASSWORD}}";
+        window.__ENV__.ADMINPASSWORD = "{{ADMINPASSWORD}}";
+    </script>
+    <script src="js/version-check.js"></script>
+    <script src="js/index-page.js"></script>
+</body>
+</html>
