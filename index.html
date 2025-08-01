@@ -1,9 +1,10 @@
+//8.1.2025 19:15 0.3.1 index.html
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>法外狂徒RunTV越獄版</title>
+    <title>潤飛TV - 充電2小時，看片2分鐘。</title>
     <meta name="description" content="潤飛TV-无广告、安全，提供多個源的免費內容搜索與觀看，無需註冊（不會寫用戶管理代碼）。">
     <meta name="keywords" content="在线视频,免费视频,视频搜索,电影,电视剧,潤飛TV">
     <meta name="author" content="RUN Team">
@@ -164,10 +165,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                     </svg>
                     -->
-                    <img src="https://raw.githubusercontent.com/BTYcloud/LTV/main/image/cnlogo.png" alt="Logo" class="h-12 mr-4">
-                    <h1 class="text-4xl sm:text-5xl font-bold text-neutral-100">RunTV-法外狂徒版本1.2</h1>
+                    <img src="https://raw.githubusercontent.com/BTYcloud/LTV/main/image/logo.png" alt="Logo" class="h-12 mr-4">
+                    <h1 class="text-4xl sm:text-5xl font-bold text-neutral-100">潤飛TV_Beta3.04</h1>
                 </a>
-                <p class="text-neutral-400 mt-4 text-sm sm:text-base">這個正義朋友面善又友善，因此批准禁片一週看兩天...</p>
+                <p class="text-neutral-400 mt-4 text-sm sm:text-base">自由看片，蜂享盜版</p>
             </header>
             
             <main id="searchArea" class="w-full flex-grow flex flex-col items-center justify-start">
@@ -177,7 +178,7 @@
                             首頁
                         </button>
                         <div class="relative flex-1">
-                            <input type="text" id="searchInput" class="w-full h-full bg-transparent text-white px-5 focus:outline-none" placeholder="搜索電影、影集..." autocomplete="off" aria-label="影片搜索框" oninput="toggleClearButton()">
+                            <input type="text" id="searchInput" class="w-full h-full bg-transparent text-white px-5 focus:outline-none" placeholder="搜不到可以少几个字，不要错漏/改顺序，能力有限..." autocomplete="off" aria-label="影片搜索框" oninput="toggleClearButton()">
                             <button id="clearSearchInput" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-500 hover:text-white hidden transition-colors" onclick="clearSearchInput()" aria-label="清空搜索框" title="清空搜索框">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -240,16 +241,16 @@
                         <svg class="w-6 h-6 mr-2 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                         </svg>
-                        <span class="text-neutral-300 font-bold">Run TV越獄版</span>
+                        <span class="text-neutral-300 font-bold">潤飛TV</span>
                     </div>
-                    <p class="text-neutral-500 text-sm mt-2">© 2025 RUN TV - 越獄看片，法外狂徒</p>
+                    <p class="text-neutral-500 text-sm mt-2">© 2025 RUN TV - 自由看片，蜂享盜版</p>
                 </div>
                 <div class="text-center md:text-right">
                     <p class="text-neutral-500 text-sm max-w-md">
-                        免責聲明：你正在使用法外狂徒越獄版本，不會有維護和更新，有任何問題都請不要聯繫我。
+                        免責聲明：本站僅為視頻搜索工具，不存儲、上傳或分發任何影片內容。所有影片均來自第三方API。僅供學習用途，如有侵權，請不要聯繫我。
                     </p>
                     <div class="mt-2 flex justify-center md:justify-end space-x-4">
-                        <a href="https://zh.wikipedia.org/zh-tw/%E5%85%AD%E5%9B%9B%E4%BA%8B%E4%BB%B6" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-400 text-sm transition-colors">點擊越獄</a>
+                        <a href="https://www.msf.hk/zh-hant/donate/general?type=one-off" target="_blank" rel="noopener" class="text-blue-500 hover:text-blue-400 text-sm transition-colors">捐款打賞</a>
                     </div>
                 </div>
             </div>
@@ -272,15 +273,15 @@
     <div id="passwordModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm hidden items-center justify-center z-[80] transition-opacity duration-300 p-4">
         <div class="bg-zinc-900 p-8 rounded-2xl w-11/12 max-w-md border border-zinc-800 flex flex-col shadow-2xl shadow-black/50">
             <div class="flex justify-between items-center mb-6 flex-none">
-                <h2 class="text-2xl font-semibold text-neutral-100">！法外狂徒版本！</h2>
+                <h2 class="text-2xl font-semibold text-neutral-100">芝麻開門代碼</h2>
             </div>
             <div class="mb-6">
-                <p class="text-neutral-400 mb-4">請自覺離開</p>
+                <p class="text-neutral-400 mb-4">不知道密碼你看個der</p>
                 <form id="passwordForm" onsubmit="handlePasswordSubmit(); return false;">
                     <input type="text" name="username" id="username" autocomplete="username" style="display:none" tabindex="-1" aria-hidden="true">
-                    <input type="password" id="passwordInput" class="w-full bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" placeholder="密碼肯定不是8964..." autocomplete="new-password">
+                    <input type="password" id="passwordInput" class="w-full bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" placeholder="密碼肯定不是114514..." autocomplete="new-password">
                     <div class="mt-6 w-full flex space-x-4">
-                        <button id="passwordSubmitBtn" type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">你還有1/1次嘗試機會</button>
+                        <button id="passwordSubmitBtn" type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">密碼應該是這個</button>
                         <button id="passwordCancelBtn" type="button" onclick="hidePasswordModal()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">我滾蛋</button>
                     </div>
                 </form>
@@ -293,14 +294,14 @@
         <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-black/50">
             <h2 class="text-2xl font-semibold text-neutral-100 mb-6 text-center">使用聲明</h2>
             <div class="text-neutral-300 space-y-4">
-                <p>不歡迎使用 Dick TV。在使用前，請您忽略以下條款：</p>
-                <p><strong class="text-blue-400">科學定義：</strong> Dick 陰莖的主要功能是排尿和性交。它由尿道海綿體和兩條陰莖海綿體組成。</p>
-                <p><strong class="text-blue-400">使用場景：</strong> Dick 中尿道海綿體環繞著尿道。 陰莖海綿體充血時，陰莖會勃起，使其能夠進行性交。</p>
-                <p><strong class="text-blue-400">總結迪克用途：</strong> 總之，陰莖是男性生殖系統的重要組成部分，同時也參與了排泄和生殖兩個重要的生理過程。 </p>
+                <p>歡迎使用 Run TV。在使用前，請您瞭解並同意以下條款：</p>
+                <p><strong class="text-blue-400">服務性質：</strong> RunTV 僅用於學習演示，不提供任何影片內容。所有搜索結果均來自第三方公開接口，說白了我沒有資源。</p>
+                <p><strong class="text-blue-400">免責聲明：</strong> RunTV 並不對外開放，通過任何方式訪問本站均為個人行為，一切後果自行負責。</p>
+                <p><strong class="text-blue-400">廣告風險提示：</strong> 本站所有資源均來自第三方，影片裡的廣告沒法去掉（類似字幕一樣），謹防上當受騙。</p>
             </div>
             <div class="mt-8 flex justify-center">
                 <button id="acceptDisclaimerBtn" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-900/50 transition-all duration-300">
-                    啊來來來我不同意！
+                    啊來來來我同意！
                 </button>
             </div>
         </div>
@@ -331,27 +332,3 @@
         }
     }
     </script>
-    
-
-    <script src="libs/sha256.min.js"></script>
-    <script>
-        window._jsSha256 = window.sha256;
-    </script>
-    <script src="js/config.js"></script>
-    <script src="js/customer_site.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/douban.js"></script>
-    <script src="js/password.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/pwa-register.js"></script>
-    <script>
-        window.__ENV__ = window.__ENV__ || {};
-        window.__ENV__.PASSWORD = "{{PASSWORD}}";
-        window.__ENV__.ADMINPASSWORD = "{{ADMINPASSWORD}}";
-    </script>
-    <script src="js/version-check.js"></script>
-    <script src="js/index-page.js"></script>
-</body>
-</html>
