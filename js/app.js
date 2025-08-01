@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // 设置默认API选择（如果是第一次加载）
     if (!localStorage.getItem('hasInitializedDefaults')) {
         // 默认选中资源
-        selectedAPIs = ["dyttzy", "ruyi", "bfzy", "tyyszy", "xiaomaomi", "ffzy", "heimuer", "zy360", "iqiyi", "wolong", "hwba", "jisu", "dbzy", "mozhua", "mdzy", "zuid", "yinghua", "baidu", "wujin", "wwzy", "ikun", "lzi", "testSource", "suoni", "maotai"];
+        selectedAPIs = ["dyttzy", "ruyi", "bfzy", "tyyszy", "heimuer", "wolong", "jisu", "zuid", "wujin", "ikun", "lzi", "maotai"];
         localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
 
         // 原版过滤开关
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
         
         // 默认关闭黄色内容过滤器
-        localStorage.setItem('yellowFilterEnabled', 'false');
+        localStorage.setItem('yellowFilterEnabled', 'true');
 
         // 默认启用广告过滤
         localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
