@@ -33,8 +33,8 @@ async function checkForUpdates() {
         // 获取最新版本
         let latestVersion;
         const VERSION_URL = {
-            PROXY: 'https://ghfast.top/raw.githubusercontent.com/BTYcloud/LTV/tree/main/VERSION.txt',
-            DIRECT: 'https://raw.githubusercontent.com/BTYcloud/LTV/tree/main/VERSION.txt'
+            PROXY: 'https://ghfast.top/raw.githubusercontent.com/BTYcloud/LTV/tree/main/NEWversion.txt',
+            DIRECT: 'https://raw.githubusercontent.com/BTYcloud/LTV/tree/main/NEWversion.txt'
         };
         const FETCH_TIMEOUT = 1500;
 
@@ -129,7 +129,7 @@ function addVersionInfoToFooter() {
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
-                发现新版
+                發現新版
             </span>`;
             setTimeout(() => {
                 const updateBtn = versionElement.querySelector('span');
