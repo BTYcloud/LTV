@@ -165,7 +165,7 @@
                     </svg>
                     -->
                     <img src="https://raw.githubusercontent.com/BTYcloud/LTV/main/image/logo.png" alt="Logo" class="h-12 mr-4">
-                    <h1 class="text-4xl sm:text-5xl font-bold text-neutral-100">潤飛TV_Beta2.29</h1>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-neutral-100">潤飛TV_Beta3.01</h1>
                 </a>
                 <p class="text-neutral-400 mt-4 text-sm sm:text-base">自由看片，蜂享盜版</p>
             </header>
@@ -173,11 +173,11 @@
             <main id="searchArea" class="w-full flex-grow flex flex-col items-center justify-start">
                 <div class="w-full max-w-2xl">
                     <div class="flex items-stretch h-14 bg-zinc-900 border border-zinc-700 rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
-                        <button onclick="resetToHome()" class="w-20 sm:w-24 flex items-center justify-center bg-zinc-800/50 text-neutral-300 font-medium hover:bg-zinc-700/50 transition-colors" aria-label="返回首页" title="返回首页">
+                        <button onclick="resetToHome()" class="w-20 sm:w-24 flex items-center justify-center bg-zinc-800/50 text-neutral-300 font-medium hover:bg-zinc-700/50 transition-colors" aria-label="返回首頁" title="返回首頁">
                             首頁
                         </button>
                         <div class="relative flex-1">
-                            <input type="text" id="searchInput" class="w-full h-full bg-transparent text-white px-5 focus:outline-none" placeholder="搜索電影、影集..." autocomplete="off" aria-label="视频搜索框" oninput="toggleClearButton()">
+                            <input type="text" id="searchInput" class="w-full h-full bg-transparent text-white px-5 focus:outline-none" placeholder="搜索電影、影集..." autocomplete="off" aria-label="影片搜索框" oninput="toggleClearButton()">
                             <button id="clearSearchInput" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center text-neutral-500 hover:text-white hidden transition-colors" onclick="clearSearchInput()" aria-label="清空搜索框" title="清空搜索框">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -281,7 +281,7 @@
                     <input type="password" id="passwordInput" class="w-full bg-zinc-800 border border-zinc-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-colors" placeholder="密碼肯定不是114514..." autocomplete="new-password">
                     <div class="mt-6 w-full flex space-x-4">
                         <button id="passwordSubmitBtn" type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">密碼應該是這個</button>
-                        <button id="passwordCancelBtn" type="button" onclick="hidePasswordModal()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">算了不看了</button>
+                        <button id="passwordCancelBtn" type="button" onclick="hidePasswordModal()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors">我滾蛋</button>
                     </div>
                 </form>
                 <p id="passwordError" class="text-red-500 mt-4 text-center hidden">有內鬼！取消交易！</p>
@@ -293,10 +293,10 @@
         <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl shadow-black/50">
             <h2 class="text-2xl font-semibold text-neutral-100 mb-6 text-center">使用聲明</h2>
             <div class="text-neutral-300 space-y-4">
-                <p>歡迎使用 潤飛TV。在開始使用前，請您瞭解並同意以下條款：</p>
-                <p><strong class="text-blue-400">服務性質：</strong> 潤飛TV 僅提供視頻搜索服務，不提供、存儲或上傳任何視頻內容。所有搜索結果均來自第三方公開接口。</p>
-                <p><strong class="text-blue-400">用戶責任：</strong> 用戶在使用本站服務時，須遵守相關法律法規，不得利用搜索結果從事侵權行為，如下載、傳播未經授權的作品等。</p>
-                <p><strong class="text-blue-400">廣告風險提示：</strong> 本站所有視頻均來自第三方採集站，沒法去掉，請勿相信或點擊視頻中的任何廣告內容，謹防上當受騙。</p>
+                <p>歡迎使用 Run TV。在使用前，請您瞭解並同意以下條款：</p>
+                <p><strong class="text-blue-400">服務性質：</strong> RunTV 僅用於學習演示，不提供任何影片內容。所有搜索結果均來自第三方公開接口，說白了我沒有資源。</p>
+                <p><strong class="text-blue-400">免責聲明：</strong> RunTV 並不對外開放，通過任何方式訪問本站均為個人行為，一切後果自行負責。</p>
+                <p><strong class="text-blue-400">廣告風險提示：</strong> 本站所有資源均來自第三方，影片裡的廣告沒法去掉（類似字幕一樣），謹防上當受騙。</p>
             </div>
             <div class="mt-8 flex justify-center">
                 <button id="acceptDisclaimerBtn" class="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-900/50 transition-all duration-300">
@@ -322,15 +322,16 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "潤飛TV",
-        "url": "https://libretv.is-an.org/",
-        "description": "免费在线视频搜索与观看平台",
+        "url": "https://runtv.top/",
+        "description": "有個偉大朋友在硬幣背後...",
         "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://libretv.is-an.org/?s={search_term_string}",
+            "target": "https://runtv.top/?s={search_term_string}",
             "query-input": "required name=search_term_string"
         }
     }
     </script>
+    
 
     <script src="libs/sha256.min.js"></script>
     <script>
