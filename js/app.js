@@ -27,10 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 设置默认API选择（如果是第一次加载）
     if (!localStorage.getItem('hasInitializedDefaults')) {
-    // 从API_SITES配置中动态提取所有非成人站点的键，并设置为默认选中
-    const allValidApiKeys = Object.keys(API_SITES).filter(key => !API_SITES[key].adult);
-    let selectedAPIs = allValidApiKeys;
-    localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
+        // 默认选中资源
+        selectedAPIs = ["yttzy", "ruyi", "bfzy", "tyyszy", "xiaomaomi", "ffzy", "heimuer", "zy360", "iqiyi", "wolong", "hwba", "jisu", "dbzy", "mozhua", "mdzy", "zuid", "yinghua", "baidu", "wujin", "wwzy", "ikun", "lzi", "suoni", "maotai"];
+        localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
+
+        // 默认选中过滤开关
+        localStorage.setItem('yellowFilterEnabled', 'true');
+        localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
 
         // 默认选中过滤开关
         localStorage.setItem('yellowFilterEnabled', 'true');
