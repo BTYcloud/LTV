@@ -31,13 +31,16 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedAPIs = ["dyttzy", "ruyi", "bfzy", "tyyszy", "xiaomaomi", "ffzy", "heimuer", "zy360", "iqiyi", "wolong", "hwba", "jisu", "dbzy", "mozhua", "mdzy", "zuid", "yinghua", "baidu", "wujin", "wwzy", "ikun", "lzi", "testSource", "suoni", "maotai"];
         localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
 
-        // 默认选中过滤开关
-        localStorage.setItem('yellowFilterEnabled', 'true');
+        // 原版过滤开关
+        //localStorage.setItem('yellowFilterEnabled', 'true');
+        //localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
+        
+        // 默认关闭黄色内容过滤器
+        localStorage.setItem('yellowFilterEnabled', 'false');
+
+        // 默认启用广告过滤
         localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
 
-        // 默认选中过滤开关
-        localStorage.setItem('yellowFilterEnabled', 'true');
-        localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
 
         // 默认启用豆瓣功能
         localStorage.setItem('doubanEnabled', 'false');
