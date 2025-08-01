@@ -26,36 +26,34 @@ document.addEventListener('DOMContentLoaded', function () {
     renderSearchHistory();
 
 // 设置默认API选择（如果是第一次加载）
-if (!localStorage.getItem('hasInitializedDefaults')) {
-    // 默认选中所有资源
-    const allAPIs = Object.keys(API_SITES); // 获取所有API站点键
-    selectedAPIs = allAPIs;
+    if (!localStorage.getItem('hasInitializedDefaults')) {
+    // 从API_SITES配置中动态提取所有非成人站点的键，并设置为默认选中
+    const allValidApiKeys = Object.keys(API_SITES).filter(key => !API_SITES[key].adult);
+    let selectedAPIs = allValidApiKeys;
     localStorage.setItem('selectedAPIs', JSON.stringify(selectedAPIs));
 
-    // 默认关闭黄色内容过滤
-    localStorage.setItem('yellowFilterEnabled', 'false');
+        // 默认选中过滤开关
+        localStorage.setItem('yellowFilterEnabled', 'true');
+        localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
 
-    // 默认启用广告过滤
-    localStorage.setItem(PLAYER_CONFIG.adFilteringStorage, 'true');
+        // 默认启用豆瓣功能
+        localStorage.setItem('doubanEnabled', 'false');
 
-    // 默认关闭豆瓣功能
-    localStorage.setItem('doubanEnabled', 'false');
+        // 标记已初始化默认值
+        localStorage.setItem('hasInitializedDefaults', 'true');
+    }
 
-    // 标记已初始化默认值
-    localStorage.getItem('hasInitializedDefaults', 'true');
-}
+    // 设置黄色内容过滤器开关初始状态
+    const yellowFilterToggle = document.getElementById('yellowFilterToggle');
+    if (yellowFilterToggle) {
+        yellowFilterToggle.checked = localStorage.getItem('yellowFilterEnabled') === 'true';
+    }
 
-// 设置黄色内容过滤器开关初始状态
-const yellowFilterToggle = document.getElementById('yellowFilterToggle');
-if (yellowFilterToggle) {
-    yellowFilterToggle.checked = localStorage.getItem('yellowFilterEnabled') === 'true'; // false
-}
-
-// 设置广告过滤开关初始状态
-const adFilterToggle = document.getElementById('adFilterToggle');
-if (adFilterToggle) {
-    adFilterToggle.checked = localStorage.getItem(PLAYER_CONFIG.adFilteringStorage) !== 'false'; // true
-}
+    // 设置广告过滤开关初始状态
+    const adFilterToggle = document.getElementById('adFilterToggle');
+    if (adFilterToggle) {
+        adFilterToggle.checked = localStorage.getItem(PLAYER_CONFIG.adFilteringStorage) !== 'false'; // 默认为true
+    }
 
     // 设置事件监听器
     setupEventListeners();
