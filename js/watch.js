@@ -10,9 +10,9 @@ window.onload = function() {
     const statusElement = document.getElementById('redirect-status');
     const manualRedirect = document.getElementById('manual-redirect');
     let statusMessages = [
-        "准备视频数据中...",
-        "正在加载视频信息...",
-        "即将开始播放...",
+        "準備影片數據1/3...",
+        "正在加載數據2/3...",
+        "來來來來上片！！！",
     ];
     let currentStatus = 0;
     
